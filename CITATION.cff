@@ -16,5 +16,5 @@ identifiers:
     description: Zenodo publication
 repository-code: 'https://github.com/hampusnasstrom/nomad-sintering'
 license: MIT
-version: 1.0.0
+version: 1.0.2
 date-released: '2024-09-18'
