@@ -3,7 +3,7 @@ message: "If you use this software, please cite it as below."
 authors:
 - given-names: "Hampus"
   family-names: "Näsström"
-  orcid: "https://sandbox.orcid.org/0009-0009-6842-4866"
+  orcid: "https://orcid.org/0000-0002-3264-1692"
 title: "nomad-sintering"
 version: 1.0.5
 doi: 10.5072/zenodo.110426
