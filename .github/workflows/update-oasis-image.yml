@@ -1,0 +1,52 @@
+name: Update OASIS Image
+
+on:
+  release:
+    types: [published] # Trigger when a release is published
+
+jobs:
+  update-oasis-repo:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the source repository
+      - name: Checkout Source Repository
+        uses: actions/checkout@v4
+
+      # Step 2: Extract the version from the release tag
+      - name: Extract Release Version
+        id: extract_version
+        run: echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      # Step 3: Clone the target repository
+      - name: Clone Target Repository
+        run: |
+          git clone https://github.com/hampusnasstrom/nomad-sintering-image.git
+          cd nomad-sintering-image
+
+      # Step 4: Update the pyproject.toml file
+      - name: Update pyproject.toml
+        run: |
+          cd nomad-sintering-image
+          sed -i "s/^version = .*/version = \"${{ env.version }}\"/" pyproject.toml
+
+      # Step 5: Commit and push changes to a new branch
+      - name: Commit and Push Changes
+        run: |
+          cd nomad-sintering-image
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b update-nomad-sintering-version-${{ env.version }}
+          git add pyproject.toml
+          git commit -m "Update nomad-sintering version to ${{ env.version }}"
+          git push origin update-nomad-sintering-version-${{ env.version }}
+
+      # Step 6: Create a pull request in the target repository
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: target-org/target-repo
+          branch: update-version-${{ env.version }}
+          title: "Update nomad-sintering version to ${{ env.version }}"
+          body: "This PR updates the version of the nomad-sintering plugin to ${{ env.version }}."
