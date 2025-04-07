@@ -28,7 +28,7 @@ jobs:
       - name: Update pyproject.toml
         run: |
           cd nomad-sintering-image
-          sed -i "s/^version = .*/version = \"${{ env.version }}\"/" pyproject.toml
+          sed -i 's|nomad-sintering = { git = "https://github.com/hampusnasstrom/nomad-sintering.git", rev = "v[^"]*" }|nomad-sintering = { git = "https://github.com/hampusnasstrom/nomad-sintering.git", rev = "${{ env.version }}" }|' pyproject.toml
 
       # Step 5: Commit and push changes to a new branch
       - name: Commit and Push Changes
