@@ -39,14 +39,14 @@ jobs:
           git checkout -b update-nomad-sintering-version-${{ env.version }}
           git add pyproject.toml
           git commit -m "Update nomad-sintering version to ${{ env.version }}"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/hampusnasstrom/nomad-sintering-image.git update-nomad-sintering-version-${{ env.version }}
+          git push https://x-access-token:${{ secrets.OASIS_IMAGE_PAT }}@github.com/hampusnasstrom/nomad-sintering-image.git update-nomad-sintering-version-${{ env.version }}
 
       # Step 6: Create a pull request in the target repository
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          repository: target-org/target-repo
+          token: ${{ secrets.OASIS_IMAGE_PAT }}
+          repository: hampusnasstrom/nomad-sintering-image
           branch: update-version-${{ env.version }}
           title: "Update nomad-sintering version to ${{ env.version }}"
           body: "This PR updates the version of the nomad-sintering plugin to ${{ env.version }}."
